@@ -119,6 +119,12 @@
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="DateTimePickerDemo.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <Text Include="readme.txt">
       <DeploymentContent>false</DeploymentContent>
     </Text>
