@@ -5,6 +5,8 @@
   <PropertyGroup Label="Globals">
     <CppWinRTOptimized>true</CppWinRTOptimized>
     <MinimalCoreWin>true</MinimalCoreWin>
+    <RnwNewArch>true</RnwNewArch>
+    <DisableAutolink>true</DisableAutolink>
     <ProjectGuid>{120733fe-7210-414d-9b08-a117cb99ad15}</ProjectGuid>
     <ProjectName>DateTimePickerDemo</ProjectName>
     <Keyword>Win32Proj</Keyword>
