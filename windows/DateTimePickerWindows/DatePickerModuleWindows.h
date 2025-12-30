@@ -4,8 +4,8 @@
 #pragma once
 
 #include "NativeModules.h"
-#include <winrt/Microsoft.UI.Xaml.Controls.h>
-#include <winrt/Windows.Globalization.h>
+#include "DatePickerComponent.h"
+#include <memory>
 
 namespace winrt::DateTimePicker {
 
@@ -25,16 +25,8 @@ struct DatePickerModule {
 
  private:
   winrt::Microsoft::ReactNative::ReactContext m_reactContext{nullptr};
-  winrt::Microsoft::UI::Xaml::Controls::CalendarDatePicker m_datePickerControl{nullptr};
+  std::unique_ptr<Components::DatePickerComponent> m_datePickerComponent;
   winrt::Microsoft::ReactNative::ReactPromise<ReactNativeSpecs::DatePickerModuleWindowsSpec_DatePickerResult> m_currentPromise{nullptr};
-  
-  // Event handlers
-  winrt::Microsoft::UI::Xaml::Controls::CalendarDatePicker::DateChanged_revoker m_dateChangedRevoker;
-
-  // Helper methods
-  winrt::Windows::Foundation::DateTime DateTimeFrom(int64_t timeInMilliseconds, int64_t timeZoneOffsetInSeconds);
-  int64_t DateTimeToMilliseconds(winrt::Windows::Foundation::DateTime dateTime, int64_t timeZoneOffsetInSeconds);
-  void CleanupPicker();
 };
 
 } // namespace winrt::DateTimePicker
