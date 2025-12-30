@@ -125,6 +125,11 @@
     <ClInclude Include="TimePickerViewManager.h" />
     <ClInclude Include="DateTimePickerFabric.h" />
     <ClInclude Include="TimePickerFabric.h" />
+    <ClInclude Include="DatePickerModuleWindows.h" />
+    <ClInclude Include="TimePickerModuleWindows.h" />
+    <ClInclude Include="DateTimeHelpers.h" />
+    <ClInclude Include="DatePickerComponent.h" />
+    <ClInclude Include="TimePickerComponent.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ReactPackageProvider.h">
       <DependentUpon>ReactPackageProvider.idl</DependentUpon>
@@ -141,6 +146,11 @@
     <ClCompile Include="TimePickerViewManager.cpp" />
     <ClCompile Include="DateTimePickerFabric.cpp" />
     <ClCompile Include="TimePickerFabric.cpp" />
+    <ClCompile Include="DatePickerModuleWindows.cpp" />
+    <ClCompile Include="TimePickerModuleWindows.cpp" />
+    <ClCompile Include="DateTimeHelpers.cpp" />
+    <ClCompile Include="DatePickerComponent.cpp" />
+    <ClCompile Include="TimePickerComponent.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

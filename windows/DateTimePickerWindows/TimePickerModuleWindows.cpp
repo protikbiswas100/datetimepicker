@@ -1,6 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// TimePickerModule: TurboModule implementation for imperative time picker API
+// This is NOT the Fabric component - see TimePickerFabric.cpp for declarative component
+// This provides DateTimePickerWindows.open() imperative API for time selection
+
 #include "pch.h"
 #include "TimePickerModuleWindows.h"
 
@@ -13,52 +17,29 @@ void TimePickerModule::Initialize(winrt::Microsoft::ReactNative::ReactContext co
   m_reactContext = reactContext;
 }
 
+// Called from JavaScript via DateTimePickerWindows.open() TurboModule API
+// Example usage in JS:
+//   import { DateTimePickerWindows } from '@react-native-community/datetimepicker';
+//   DateTimePickerWindows.open({
+//     value: new Date(),
+//     mode: 'time',
+//     is24Hour: true,
+//     onChange: (event, time) => { ... }
+//   });
+// See: src/DateTimePickerWindows.windows.js and docs/windows-xaml-support.md
 void TimePickerModule::Open(ReactNativeSpecs::TimePickerModuleWindowsSpec_TimePickerOpenParams &&params,
                             winrt::Microsoft::ReactNative::ReactPromise<ReactNativeSpecs::TimePickerModuleWindowsSpec_TimePickerResult> promise) noexcept {
-  // Ensure XAML is initialized
-  winrt::Microsoft::ReactNative::Xaml::implementation::XamlApplication::EnsureCreated();
-
   // Clean up any existing picker
-  CleanupPicker();
+  m_timePickerComponent.reset();
 
   // Store the promise
   m_currentPromise = promise;
 
-  // Create the TimePicker
-  m_timePickerControl = winrt::Microsoft::UI::Xaml::Controls::TimePicker{};
-
-  // Set properties from params
-  if (params.is24Hour.has_value()) {
-    m_timePickerControl.ClockIdentifier(params.is24Hour.value() ? L"24HourClock" : L"12HourClock");
-  }
-
-  if (params.minuteInterval.has_value()) {
-    m_timePickerControl.MinuteIncrement(static_cast<int32_t>(params.minuteInterval.value()));
-  }
-
-  if (params.selectedTime.has_value()) {
-    // Convert timestamp (milliseconds since midnight) to TimeSpan
-    int64_t totalMilliseconds = static_cast<int64_t>(params.selectedTime.value());
-    int64_t totalSeconds = totalMilliseconds / 1000;
-    int32_t hour = static_cast<int32_t>((totalSeconds / 3600) % 24);
-    int32_t minute = static_cast<int32_t>((totalSeconds % 3600) / 60);
-    
-    winrt::Windows::Foundation::TimeSpan timeSpan{};
-    timeSpan.Duration = (hour * 3600LL + minute * 60LL) * 10000000LL; // Convert to 100-nanosecond intervals
-    m_timePickerControl.Time(timeSpan);
-  }
-
-  // Register event handler for time changed
-  m_timeChangedRevoker = m_timePickerControl.TimeChanged(winrt::auto_revoke,
-      [this](auto const& /*sender*/, auto const& args) {
+  // Create and open the time picker component
+  m_timePickerComponent = std::make_unique<Components::TimePickerComponent>();
+  m_timePickerComponent->Open(params,
+      [this](const int32_t hour, const int32_t minute) {
         if (m_currentPromise) {
-          auto timeSpan = args.NewTime();
-          
-          // Convert TimeSpan to hours and minutes
-          int64_t totalSeconds = timeSpan.Duration / 10000000LL; // Convert from 100-nanosecond intervals
-          int32_t hour = static_cast<int32_t>(totalSeconds / 3600);
-          int32_t minute = static_cast<int32_t>((totalSeconds % 3600) / 60);
-
           ReactNativeSpecs::TimePickerModuleWindowsSpec_TimePickerResult result;
           result.action = "timeSetAction";
           result.hour = hour;
@@ -68,7 +49,7 @@ void TimePickerModule::Open(ReactNativeSpecs::TimePickerModuleWindowsSpec_TimePi
           m_currentPromise = nullptr;
           
           // Clean up the picker after resolving
-          CleanupPicker();
+          m_timePickerComponent.reset();
         }
       });
 
@@ -88,15 +69,11 @@ void TimePickerModule::Dismiss(winrt::Microsoft::ReactNative::ReactPromise<bool>
     m_currentPromise = nullptr;
   }
 
-  CleanupPicker();
+  // Clean up component
+  m_timePickerComponent.reset();
   promise.Resolve(true);
 }
 
-void TimePickerModule::CleanupPicker() {
-  if (m_timePickerControl) {
-    m_timeChangedRevoker.revoke();
-    m_timePickerControl = nullptr;
-  }
-}
+} // namespace winrt::DateTimePicker
 
 } // namespace winrt::DateTimePicker

@@ -6,7 +6,7 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerWindows } from '@react-native-community/datetimepicker';
 
 export default function App() {
   const [date, setDate] = useState(new Date());
@@ -32,6 +32,49 @@ export default function App() {
     }
   };
 
+  // Windows-specific imperative API example
+  const openWindowsDatePicker = () => {
+    if (Platform.OS === 'windows' && DateTimePickerWindows) {
+      DateTimePickerWindows.open({
+        value: date,
+        mode: 'date',
+        minimumDate: new Date(2000, 0, 1),
+        maximumDate: new Date(2025, 11, 31),
+        firstDayOfWeek: 0, // Sunday
+        onChange: (event, selectedDate) => {
+          if (event.type === 'set' && selectedDate) {
+            setDate(selectedDate);
+          }
+        },
+        onError: (error) => {
+          console.error('Date picker error:', error);
+        }
+      });
+    } else {
+      setShowDatePicker(true);
+    }
+  };
+
+  const openWindowsTimePicker = () => {
+    if (Platform.OS === 'windows' && DateTimePickerWindows) {
+      DateTimePickerWindows.open({
+        value: time,
+        mode: 'time',
+        is24Hour: true,
+        onChange: (event, selectedTime) => {
+          if (event.type === 'set' && selectedTime) {
+            setTime(selectedTime);
+          }
+        },
+        onError: (error) => {
+          console.error('Time picker error:', error);
+        }
+      });
+    } else {
+      setShowTimePicker(true);
+    }
+  };
+
   const formattedDate = date.toDateString();
   const formattedTime = time.toLocaleTimeString();
   const combinedDateTime = `${date.toLocaleDateString()} ${time.toLocaleTimeString()}`;
@@ -50,9 +93,9 @@ export default function App() {
             <Text style={styles.value}>{formattedDate}</Text>
             <Text
               style={styles.button}
-              onPress={() => setShowDatePicker(true)}
+              onPress={openWindowsDatePicker}
             >
-              Pick Date
+              Pick Date {Platform.OS === 'windows' ? '(Imperative API)' : ''}
             </Text>
           </View>
         </View>
@@ -65,9 +108,9 @@ export default function App() {
             <Text style={styles.value}>{formattedTime}</Text>
             <Text
               style={styles.button}
-              onPress={() => setShowTimePicker(true)}
+              onPress={openWindowsTimePicker}
             >
-              Pick Time
+              Pick Time {Platform.OS === 'windows' ? '(Imperative API)' : ''}
             </Text>
           </View>
         </View>

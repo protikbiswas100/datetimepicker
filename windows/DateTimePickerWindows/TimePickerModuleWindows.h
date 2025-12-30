@@ -5,7 +5,8 @@
 
 #include "NativeModules.h"
 #include "NativeModulesWindows.g.h"
-#include <winrt/Microsoft.UI.Xaml.Controls.h>
+#include "TimePickerComponent.h"
+#include <memory>
 
 namespace winrt::DateTimePicker {
 
@@ -25,13 +26,8 @@ struct TimePickerModule {
 
  private:
   winrt::Microsoft::ReactNative::ReactContext m_reactContext{nullptr};
-  winrt::Microsoft::UI::Xaml::Controls::TimePicker m_timePickerControl{nullptr};
+  std::unique_ptr<Components::TimePickerComponent> m_timePickerComponent;
   winrt::Microsoft::ReactNative::ReactPromise<ReactNativeSpecs::TimePickerModuleWindowsSpec_TimePickerResult> m_currentPromise{nullptr};
-  
-  // Event handlers
-  winrt::Microsoft::UI::Xaml::Controls::TimePicker::TimeChanged_revoker m_timeChangedRevoker;
-
-  void CleanupPicker();
 };
 
 } // namespace winrt::DateTimePicker
