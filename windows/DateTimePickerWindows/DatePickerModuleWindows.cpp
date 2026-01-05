@@ -29,13 +29,11 @@ void DatePickerModule::Initialize(winrt::Microsoft::ReactNative::ReactContext co
 // See: src/DateTimePickerWindows.windows.js and docs/windows-xaml-support.md
 void DatePickerModule::Open(ReactNativeSpecs::DatePickerModuleWindowsSpec_DatePickerOpenParams &&params,
                             winrt::Microsoft::ReactNative::ReactPromise<ReactNativeSpecs::DatePickerModuleWindowsSpec_DatePickerResult> promise) noexcept {
-  // Clean up any existing picker
-  m_datePickerComponent.reset();
-
   // Store the promise
   m_currentPromise = promise;
 
   // Create and open the date picker component
+  // Direct assignment automatically destroys any existing picker
   // Note: This is separate from the Fabric component (DateTimePickerFabric.cpp)
   // This component is used by the TurboModule for imperative API calls
   m_datePickerComponent = std::make_unique<Components::DatePickerComponent>();

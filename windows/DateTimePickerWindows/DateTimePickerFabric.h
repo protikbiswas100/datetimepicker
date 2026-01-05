@@ -31,25 +31,13 @@ struct DateTimePickerComponentView : public winrt::implements<DateTimePickerComp
 private:
   winrt::Microsoft::UI::Xaml::XamlIsland m_xamlIsland{nullptr};
   winrt::Microsoft::UI::Xaml::Controls::CalendarDatePicker m_calendarDatePicker{nullptr};
+  winrt::Microsoft::UI::Xaml::Controls::CalendarDatePicker::DateChanged_revoker m_dateChangedRevoker;
   int64_t m_timeZoneOffsetInSeconds = 0;
-  bool m_updating = false;
 };
 
 } // namespace winrt::DateTimePicker
 
-inline void RegisterDateTimePickerComponentView(winrt::Microsoft::ReactNative::IReactPackageBuilder const &packageBuilder) {
-  winrt::DateTimePicker::Codegen::RegisterDateTimePickerNativeComponent<
-      winrt::DateTimePicker::DateTimePickerComponentView>(
-      packageBuilder,
-      [](const winrt::Microsoft::ReactNative::Composition::IReactCompositionViewComponentBuilder &builder) {
-        builder.as<winrt::Microsoft::ReactNative::IReactViewComponentBuilder>().XamlSupport(true);
-        builder.SetContentIslandComponentViewInitializer(
-            [](const winrt::Microsoft::ReactNative::Composition::ContentIslandComponentView &islandView) noexcept {
-              auto userData = winrt::make_self<winrt::DateTimePicker::DateTimePickerComponentView>();
-              userData->InitializeContentIsland(islandView);
-              islandView.UserData(*userData);
-            });
-      });
-}
+// Registers the DateTimePicker component view with the React Native package builder
+void RegisterDateTimePickerComponentView(winrt::Microsoft::ReactNative::IReactPackageBuilder const &packageBuilder);
 
 #endif // defined(RNW_NEW_ARCH)

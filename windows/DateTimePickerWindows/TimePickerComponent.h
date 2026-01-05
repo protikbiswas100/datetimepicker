@@ -18,7 +18,6 @@ public:
   using TimeChangedCallback = std::function<void(int32_t hour, int32_t minute)>;
   
   TimePickerComponent();
-  ~TimePickerComponent();
 
   /// <summary>
   /// Opens and configures the time picker with the provided parameters and callback.
@@ -31,11 +30,6 @@ public:
   /// Gets the underlying XAML control.
   /// </summary>
   winrt::Microsoft::UI::Xaml::Controls::TimePicker GetControl() const;
-
-  /// <summary>
-  /// Cleans up resources and revokes event handlers.
-  /// </summary>
-  void Cleanup();
 
 private:
   winrt::Microsoft::UI::Xaml::Controls::TimePicker m_control{nullptr};

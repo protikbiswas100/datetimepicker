@@ -29,13 +29,11 @@ void TimePickerModule::Initialize(winrt::Microsoft::ReactNative::ReactContext co
 // See: src/DateTimePickerWindows.windows.js and docs/windows-xaml-support.md
 void TimePickerModule::Open(ReactNativeSpecs::TimePickerModuleWindowsSpec_TimePickerOpenParams &&params,
                             winrt::Microsoft::ReactNative::ReactPromise<ReactNativeSpecs::TimePickerModuleWindowsSpec_TimePickerResult> promise) noexcept {
-  // Clean up any existing picker
-  m_timePickerComponent.reset();
-
   // Store the promise
   m_currentPromise = promise;
 
   // Create and open the time picker component
+  // Direct assignment automatically destroys any existing picker
   m_timePickerComponent = std::make_unique<Components::TimePickerComponent>();
   m_timePickerComponent->Open(params,
       [this](const int32_t hour, const int32_t minute) {
