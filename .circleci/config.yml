@@ -103,8 +103,7 @@ jobs:
           name: list sdks
       - android/create-avd:
           avd-name: TestingAVD
-          system-image: system-images;android-30;google_apis;x86
-          additional-args: --device pixel_6_pro
+          system-image: system-images;android-30;default;x86_64
           install: true
           background: false
       - android/start-emulator:
@@ -152,8 +151,7 @@ jobs:
           name: list avds
       - android/create-avd:
           avd-name: TestingAVD
-          system-image: system-images;android-30;google_apis;x86
-          additional-args: --device pixel_6_pro
+          system-image: system-images;android-30;default;x86_64
           install: true
           background: false
       - android/start-emulator:
