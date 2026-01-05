@@ -64,7 +64,7 @@ void TimePickerComponentView::UpdateProps(
 
   // Update clock format (12-hour vs 24-hour)
   if (props.find("is24Hour") != props.end()) {
-    bool is24Hour = props["is24Hour"].AsBoolean();
+    const bool is24Hour = props["is24Hour"].AsBoolean();
     m_timePicker.ClockIdentifier(
         is24Hour 
             ? winrt::to_hstring("24HourClock")
@@ -73,19 +73,19 @@ void TimePickerComponentView::UpdateProps(
 
   // Update minute increment
   if (props.find("minuteInterval") != props.end()) {
-    int32_t minuteInterval = static_cast<int32_t>(props["minuteInterval"].AsInt64());
+    const int32_t minuteInterval = static_cast<int32_t>(props["minuteInterval"].AsInt64());
     m_timePicker.MinuteIncrement(minuteInterval);
   }
 
   // Update selected time
   if (props.find("selectedTime") != props.end()) {
-    int64_t timeInMilliseconds = props["selectedTime"].AsInt64();
-    auto timeInSeconds = timeInMilliseconds / 1000;
-    auto hours = (timeInSeconds / 3600) % 24;
-    auto minutes = (timeInSeconds / 60) % 60;
+    const int64_t timeInMilliseconds = props["selectedTime"].AsInt64();
+    const auto timeInSeconds = timeInMilliseconds / 1000;
+    const auto hours = (timeInSeconds / 3600) % 24;
+    const auto minutes = (timeInSeconds / 60) % 60;
     
     // Create TimeSpan (100-nanosecond intervals)
-    winrt::Windows::Foundation::TimeSpan timeSpan{
+    const winrt::Windows::Foundation::TimeSpan timeSpan{
         static_cast<int64_t>((hours * 3600 + minutes * 60) * 10000000)
     };
     m_timePicker.Time(timeSpan);
