@@ -19,7 +19,6 @@ public:
   using DateChangedCallback = std::function<void(int64_t timestamp, int32_t utcOffset)>;
   
   DatePickerComponent();
-  ~DatePickerComponent();
 
   /// <summary>
   /// Opens and configures the date picker with the provided parameters and callback.
@@ -32,11 +31,6 @@ public:
   /// Gets the underlying XAML control.
   /// </summary>
   winrt::Microsoft::UI::Xaml::Controls::CalendarDatePicker GetControl() const;
-
-  /// <summary>
-  /// Cleans up resources and revokes event handlers.
-  /// </summary>
-  void Cleanup();
 
 private:
   winrt::Microsoft::UI::Xaml::Controls::CalendarDatePicker m_control{nullptr};

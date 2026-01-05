@@ -12,10 +12,6 @@ DatePickerComponent::DatePickerComponent()
 }
 }
 
-DatePickerComponent::~DatePickerComponent() {
-  Cleanup();
-}
-
 void DatePickerComponent::Open(
     const ReactNativeSpecs::DatePickerModuleWindowsSpec_DatePickerOpenParams& params,
     DateChangedCallback callback) {
@@ -63,14 +59,6 @@ void DatePickerComponent::Open(
 
 winrt::Microsoft::UI::Xaml::Controls::CalendarDatePicker DatePickerComponent::GetControl() const {
   return m_control;
-}
-
-void DatePickerComponent::Cleanup() {
-  if (m_control) {
-    m_dateChangedRevoker.revoke();
-    m_control = nullptr;
-  }
-  m_dateChangedCallback = nullptr;
 }
 
 void DatePickerComponent::OnDateChanged(

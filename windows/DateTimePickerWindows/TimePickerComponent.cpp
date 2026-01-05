@@ -6,12 +6,8 @@
 
 namespace winrt::DateTimePicker::Components {
 
-TimePickerComponent::TimePickerComponent() {
-  m_control = winrt::Microsoft::UI::Xaml::Controls::TimePicker{};
-}
-
-TimePickerComponent::~TimePickerComponent() {
-  Cleanup();
+TimePickerComponent::TimePickerComponent()
+  : m_control(winrt::Microsoft::UI::Xaml::Controls::TimePicker{}) {
 }
 
 void TimePickerComponent::Open(
@@ -51,14 +47,6 @@ void TimePickerComponent::Open(
 
 winrt::Microsoft::UI::Xaml::Controls::TimePicker TimePickerComponent::GetControl() const {
   return m_control;
-}
-
-void TimePickerComponent::Cleanup() {
-  if (m_control) {
-    m_timeChangedRevoker.revoke();
-    m_control = nullptr;
-  }
-  m_timeChangedCallback = nullptr;
 }
 
 void TimePickerComponent::OnTimeChanged(
