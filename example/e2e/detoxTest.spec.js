@@ -364,6 +364,7 @@ describe('e2e tests', () => {
   });
 
   it(':android: given we specify neutralButtonLabel, tapping the corresponding button sets date to the beginning of the unix time epoch', async () => {
+    await elementById('neutralButtonLabelTextInput').clearText();
     await elementById('neutralButtonLabelTextInput').typeText('clear');
     await userOpensPicker({mode: 'time', display: 'default'});
     await elementByText('clear').tap();
