@@ -7,8 +7,9 @@
 
 namespace winrt::DateTimePicker::Components {
 
-DatePickerComponent::DatePickerComponent() {
-  m_control = winrt::Microsoft::UI::Xaml::Controls::CalendarDatePicker{};
+DatePickerComponent::DatePickerComponent()
+    : m_control{winrt::Microsoft::UI::Xaml::Controls::CalendarDatePicker{}} {
+}
 }
 
 DatePickerComponent::~DatePickerComponent() {
