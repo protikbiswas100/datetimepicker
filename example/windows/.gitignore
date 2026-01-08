@@ -31,3 +31,6 @@ NuGet.Config
 dist/
 msbuild.binlog
 node_modules/
+
+msbuild_*.err
+msbuild_*.wrn
