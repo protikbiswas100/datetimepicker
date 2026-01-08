@@ -1,0 +1,10 @@
+{
+  "name": "date-time-picker-example",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "windows": "cd .. && npm run start:windows",
+    "start": "cd .. && npm start"
+  },
+  "readme": "Run 'npm run windows' to start the Windows app. This calls the parent package's start:windows script."
+}
