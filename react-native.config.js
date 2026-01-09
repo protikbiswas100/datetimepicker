@@ -1,33 +1,9 @@
-const project = (() => {
-  const fs = require('fs');
-  const path = require('path');
-  try {
-    const {configureProjects} = require('react-native-test-app');
+const fs = require('fs');
+const path = require('path');
 
-    return configureProjects({
-      android: {
-        sourceDir: path.join('example', 'android'),
-        manifestPath: path.join(__dirname, 'example', 'android'),
-      },
-      ios: {
-        sourceDir: 'example/ios',
-      },
-      windows: fs.existsSync(
-        'example/windows/date-time-picker-example.sln',
-      ) && {
-        sourceDir: path.join('example', 'windows'),
-        solutionFile: path.join(
-          'example',
-          'windows',
-          'date-time-picker-example.sln',
-        ),
-        project: path.join(__dirname, 'example', 'windows'),
-      },
-    });
-  } catch (e) {
-    return undefined;
-  }
-})();
+// Check if we have an example windows project
+const exampleWindowsSln = path.join(__dirname, 'example', 'windows', 'DateTimePickerDemo.sln');
+const hasExampleWindows = fs.existsSync(exampleWindowsSln);
 
 module.exports = {
   dependency: {
@@ -35,11 +11,17 @@ module.exports = {
       windows: {
         sourceDir: 'windows',
         solutionFile: 'DateTimePickerWindows.sln',
+        projects: [
+          {
+            projectFile: 'DateTimePickerWindows\\DateTimePickerWindows.vcxproj',
+            directDependency: true,
+          },
+        ],
       },
     },
   },
   dependencies: {
-    ...(project
+    ...(hasExampleWindows
       ? {
         // Help rn-cli find and autolink this library
         '@react-native-community/datetimepicker': {
@@ -55,5 +37,21 @@ module.exports = {
       }
       : undefined),
   },
-  ...(project ? {project} : undefined),
+  ...(hasExampleWindows ? {
+    project: {
+      android: {
+        sourceDir: path.join('example', 'android'),
+      },
+      ios: {
+        sourceDir: path.join('example', 'ios'),
+      },
+      windows: {
+        sourceDir: path.join('example', 'windows'),
+        solutionFile: 'DateTimePickerDemo.sln',
+        project: {
+          projectFile: path.join('DateTimePickerDemo', 'DateTimePickerDemo.vcxproj'),
+        },
+      },
+    },
+  } : undefined),
 };
